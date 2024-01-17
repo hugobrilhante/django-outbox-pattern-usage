@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  order:
+    profiles: [ order ]
+    extends:
+      file: order/compose.yaml
+      service: order-service
+  order-db:
+    profiles: [ order ]
+    extends:
+      file: order/compose.yaml
+      service: order-db
+  stock:
+    profiles: [ stock ]
+    extends:
+      file: stock/compose.yaml
+      service: stock-service
+  stock-db:
+    profiles: [ stock ]
+    extends:
+      file: stock/compose.yaml
+      service: stock-db
+  payment:
+    profiles: [ payment ]
+    extends:
+      file: payment/compose.yaml
+      service: payment-service
+  payment-db:
+    profiles: [ payment ]
+    extends:
+      file: payment/compose.yaml
+      service: payment-db
+networks:
+  saga:
+    driver: bridge
+
+volumes:
+  order-db-data:
+  stock-db-data:
+  payment-db-data:
