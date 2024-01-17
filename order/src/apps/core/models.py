@@ -1,6 +1,9 @@
 from django.db import models
+from django_outbox_pattern.decorators import Config
+from django_outbox_pattern.decorators import publish
 
 
+@publish([Config(destination='/exchange/saga/order', version="v1")])
 class Order(models.Model):
     STATUS_CHOICES = (
         ("pendent", "Pendent"),

@@ -13,6 +13,32 @@ services:
     depends_on:
       order-db:
         condition: service_healthy
+  order-publish:
+    build:
+      context: .
+    command: [ "python", "manage.py", "publish" ]
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - saga
+    depends_on:
+      order-db:
+        condition: service_healthy
+  order-subscribe:
+    build:
+      context: .
+    command: [ "python", "manage.py", "subscribe", "src.apps.core.callback.callback", "/exchange/saga/order.v1", "order.v1" ]
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - saga
+    depends_on:
+      order-db:
+        condition: service_healthy
   order-db:
     image: postgis/postgis:16-3.4
     platform: linux/amd64

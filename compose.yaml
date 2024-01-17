@@ -5,6 +5,16 @@ services:
     extends:
       file: order/compose.yaml
       service: order-service
+  order-publish:
+    profiles: [ order ]
+    extends:
+      file: order/compose.yaml
+      service: order-publish
+  order-subscribe:
+    profiles: [ order ]
+    extends:
+      file: order/compose.yaml
+      service: order-subscribe
   order-db:
     profiles: [ order ]
     extends:
