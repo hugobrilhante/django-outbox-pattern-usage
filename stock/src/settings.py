@@ -39,6 +39,9 @@ class Base(Configuration):
         "django.contrib.sessions",
         "django.contrib.messages",
         "django.contrib.staticfiles",
+        # Installed Apps
+        "rest_framework",
+        "django_outbox_pattern",
         # App locals
         "src.apps.core.apps.CoreConfig",
     ]
