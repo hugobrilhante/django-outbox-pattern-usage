@@ -35,6 +35,16 @@ services:
     extends:
       file: payment/compose.yaml
       service: payment-service
+  payment-publish:
+    profiles: [ payment ]
+    extends:
+      file: payment/compose.yaml
+      service: payment-publish
+  payment-subscribe:
+    profiles: [ payment ]
+    extends:
+      file: payment/compose.yaml
+      service: payment-subscribe
   payment-db:
     profiles: [ payment ]
     extends:

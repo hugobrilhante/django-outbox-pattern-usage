@@ -13,6 +13,32 @@ services:
     depends_on:
       payment-db:
         condition: service_healthy
+  payment-publish:
+    build:
+      context: .
+    command: [ "python", "manage.py", "publish" ]
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - saga
+    depends_on:
+      payment-db:
+        condition: service_healthy
+  payment-subscribe:
+    build:
+      context: .
+    command: [ "python", "manage.py", "subscribe", "src.apps.core.callback.callback", "/exchange/saga/payment.v1", "payment.v1" ]
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - saga
+    depends_on:
+      payment-db:
+        condition: service_healthy
   payment-db:
     image: postgis/postgis:16-3.4
     platform: linux/amd64

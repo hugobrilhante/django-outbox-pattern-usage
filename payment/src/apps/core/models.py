@@ -1,7 +1,11 @@
 import uuid
 
 from django.db import models
+from django_outbox_pattern.decorators import Config
+from django_outbox_pattern.decorators import publish
 
+
+@publish([Config(destination='/exchange/saga/payment', version="v1")])
 class Payment(models.Model):
     payment_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     order_id = models.UUIDField()
