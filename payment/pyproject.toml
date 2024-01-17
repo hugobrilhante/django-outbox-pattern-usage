@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "Payment service"
+version = "0.1.0"
+description = ""
+authors = ["Hugo Brilhante <hugobrilhante@gmail.com>"]
+readme = "README.md"
+packages = [{include = "rakt", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.7"
+django-configurations = {extras = ["cache", "database", "email", "search"], version = "^2.5"}
+whitenoise = "^6.6.0"
+gunicorn = "^21.2.0"
+psycopg2 = "^2.9.9"
+djangorestframework = "^3.14.0"
+python3-logstash = "^0.4.80"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.5.0"
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
