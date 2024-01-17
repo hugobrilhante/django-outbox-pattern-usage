@@ -1,6 +1,6 @@
 import multiprocessing
 
-# Bind to 0.0.0.0:8000 (accept connections from outside the container)
+# Bind to 0.0.0.0:8001 (accept connections from outside the container)
 bind = "0.0.0.0:8001"
 
 # Number of workers based on available CPUs in the container
