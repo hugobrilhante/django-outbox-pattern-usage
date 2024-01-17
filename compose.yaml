@@ -30,6 +30,15 @@ services:
     extends:
       file: payment/compose.yaml
       service: payment-db
+  rabbitmq:
+    build:
+      context: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+      - "61613:61613"
+    networks:
+      - saga
 networks:
   saga:
     driver: bridge
