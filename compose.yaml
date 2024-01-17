@@ -25,6 +25,16 @@ services:
     extends:
       file: stock/compose.yaml
       service: stock-service
+  stock-publish:
+    profiles: [ stock ]
+    extends:
+      file: stock/compose.yaml
+      service: stock-publish
+  stock-subscribe:
+    profiles: [ stock ]
+    extends:
+      file: stock/compose.yaml
+      service: stock-subscribe
   stock-db:
     profiles: [ stock ]
     extends:

@@ -1,5 +1,9 @@
 from django.db import models
+from django_outbox_pattern.decorators import Config
+from django_outbox_pattern.decorators import publish
 
+
+@publish([Config(destination='/exchange/saga/stock', version="v1")])
 class Inventory(models.Model):
     product_id = models.AutoField(primary_key=True)
     quantity_available = models.PositiveIntegerField(default=0)
