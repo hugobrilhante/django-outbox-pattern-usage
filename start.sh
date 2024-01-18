@@ -22,11 +22,11 @@ source manage.sh order migrate > /dev/null 2>&1
 source manage.sh stock migrate > /dev/null 2>&1
 source manage.sh payment migrate > /dev/null 2>&1
 
-#echo "Creating super users..."
-#
-#source manage.sh order createsuperuser --username=admin --email=admin@admin.com
-#source manage.sh stock createsuperuser --username=admin --email=admin@admin.com
-#source manage.sh payment createsuperuser --username=admin --email=admin@admin.com
+echo "Loading data..."
+
+source manage.sh order loaddata order > /dev/null 2>&1
+source manage.sh stock loaddata stock > /dev/null 2>&1
+source manage.sh payment loaddata payment > /dev/null 2>&1
 
 # Starting RabbitMQ to create the exchange
 docker compose up -d rabbitmq > /dev/null 2>&1
