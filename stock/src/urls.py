@@ -17,10 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from src.apps.core.views import  InventoryListCreateView, InventoryRetrieveUpdateDestroyView
-
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('inventory/', InventoryListCreateView.as_view(), name='inventory-list-create'),
-    path('inventory/<int:pk>/', InventoryRetrieveUpdateDestroyView.as_view(), name='inventory-retrieve-update-destroy'),
+
 ]

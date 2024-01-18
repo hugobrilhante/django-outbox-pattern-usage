@@ -135,7 +135,7 @@ class Base(Configuration):
     DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
     DJANGO_OUTBOX_PATTERN = {
-        "DEFAULT_STOMP_HOST_AND_PORTS": [("rabbitmq", 61613), ("127.0.0.1", 61613)],
+        "DEFAULT_STOMP_HOST_AND_PORTS": [("rabbitmq", 61613)],
     }
 
 
