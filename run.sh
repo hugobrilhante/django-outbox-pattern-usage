@@ -1,5 +1,25 @@
 #!/bin/bash
 
+:"
+Script Name: run.sh
+Description: A simple Bash script for managing Docker Compose commands with profiles.
+
+Usage:
+  ./run.sh <command> <profiles>
+
+Parameters:
+  - <command>:   Docker Compose command to execute. Supported commands: build, up, stop, down.
+  - <profiles>:  Docker Compose profiles to apply to the command.
+
+Examples:
+  ./run.sh build order    # Build Docker images for the order profile.
+  ./run.sh up order stock payment   # Start containers in the order, stock and payment profiles.
+
+Note:
+  - This script requires Docker Compose to be installed on the system.
+  - Ensure proper permissions are set to execute this script.
+"
+
 # Check if the number of arguments is valid
 if [[ $# -lt 2 ]]; then
   echo "Usage: $0 <command> <profiles>"
