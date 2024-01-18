@@ -12,10 +12,6 @@ check_status() {
     fi
 }
 
-echo "Cleaning services..."
-
-source run.sh down order stock payment > /dev/null 2>&1
-
 echo "Running migrations..."
 
 source manage.sh order migrate > /dev/null 2>&1
