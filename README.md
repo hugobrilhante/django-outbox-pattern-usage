@@ -71,3 +71,70 @@ This repository includes configuration files for deploying three Django services
 
 5. **Docker Compose:**
     - Tool for defining and running multi-container Docker applications.
+
+
+## Usage Instructions with Docker
+
+### Starting the Project
+
+1. Navigate to the project root directory.
+
+2. Run the start script:
+
+    ```bash
+    ./start.sh
+    ```
+
+   This Docker-specific script automates the following tasks:
+   - Execute database migrations.
+   - Load fixtures for initial data.
+   - Create an exchange in RabbitMQ.
+   - Start the required services.
+
+3. Once the script completes, you can access the Django services and RabbitMQ using the following URLs:
+   - Django App 1: [http://localhost:8000](http://localhost:8000)
+   - Django App 2: [http://localhost:8001](http://localhost:8001)
+   - Django App 3: [http://localhost:8002](http://localhost:8002)
+   - RabbitMQ Management UI: [http://localhost:15672](http://localhost:15672)
+
+4. Use the following credentials for Django Admin and RabbitMQ:
+   - Django Admin:
+     - Username: admin
+     - Password: admin
+   - RabbitMQ:
+     - Username: guest
+     - Password: guest
+### Testing Scenarios with Postman Collection
+
+To test different scenarios, you can use the provided Postman collection.
+
+1. Install [Postman](https://www.postman.com/downloads/) if you haven't already.
+
+2. Import the Postman [collection](Saga%20with%20Outbox%20Pattern.postman_collection.json).
+
+3. The collection contains two scenarios for testing:
+
+   - **Unreserved Stock:**
+     - Create an order with a quantity greater than 10 to simulate an unreserved stock.
+   - **Denied Payment:**
+     - Create an order with an amount greater than $1000 to simulate a denied payment.
+
+4. Run the respective requests and observe the system's behavior based on the specified scenarios.
+
+### Stopping the Project
+
+1. Navigate to the project root directory.
+
+2. Run the stop script:
+
+    ```bash
+    ./stop.sh
+    ```
+
+   This Docker-specific script will gracefully stop the project, remove associated volumes, and delete logs.
+
+3. The project is now stopped, and resources have been cleaned up.
+
+## Usage Instructions with Kubernetes
+
+**Note:** Instructions for Kubernetes deployment will be available soon. Stay tuned for updates!

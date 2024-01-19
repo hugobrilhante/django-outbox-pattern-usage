@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from src.apps.core.views import PaymentListView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/v1/payments/", PaymentListView.as_view(), name="payment-list"),
 ]

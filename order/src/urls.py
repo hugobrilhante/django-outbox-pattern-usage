@@ -17,12 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from src.apps.core.views import OrderListCreateView, OrderDetailView
+from src.apps.core.views import OrderListCreateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("orders/", OrderListCreateView.as_view(), name="order-list-create"),
-    path("orders/<int:pk>/", OrderDetailView.as_view(), name="order-detail"),
+    path("api/v1/orders/", OrderListCreateView.as_view(), name="order-list-create"),
 ]
 
 

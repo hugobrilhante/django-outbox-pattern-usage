@@ -17,7 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from src.apps.core.views import ReservationListView, StockListView
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/v1/reservations/", ReservationListView.as_view(), name="reservation-list"),
+    path("api/v1/stocks/", StockListView.as_view(), name="stock-list"),
 
 ]
