@@ -34,6 +34,9 @@ done
 
 docker compose exec rabbitmq rabbitmqadmin declare exchange name=saga type=topic > /dev/null 2>&1
 
+# Stopping RabbitMQ
+docker compose stop rabbitmq > /dev/null 2>&1
+
 echo "Starting services..."
 
 source run.sh up order stock payment > /dev/null 2>&1
