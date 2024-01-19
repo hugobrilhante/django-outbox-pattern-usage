@@ -134,23 +134,9 @@ class Base(Configuration):
 
     DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
     DJANGO_OUTBOX_PATTERN = {
         "DEFAULT_STOMP_HOST_AND_PORTS": [("rabbitmq", 61613)],
     }
-
-class Dev(Base):
-    # See https://docs.djangoproject.com/en/4.2/topics/cache/#dummy-caching-for-development
-    CACHES = values.CacheURLValue("dummy://")
-    # See http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
-    Base.INSTALLED_APPS.insert(0, "whitenoise.runserver_nostatic")
-
-
-class Prod(Base):
-    # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#csrf-cookie-secure
-    CSRF_COOKIE_SECURE = True
-    # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#session-cookie-secure
-    SESSION_COOKIE_SECURE = True
 
     LOGGING = {
         "version": 1,
@@ -165,7 +151,7 @@ class Prod(Base):
             "file": {
                 "level": "INFO",
                 "class": "logging.FileHandler",
-                "filename": "order/logs/info.log",
+                "filename": "logs/info.log",
                 "formatter": "json",
             },
         },
@@ -177,3 +163,17 @@ class Prod(Base):
             },
         },
     }
+class Dev(Base):
+    # See https://docs.djangoproject.com/en/4.2/topics/cache/#dummy-caching-for-development
+    CACHES = values.CacheURLValue("dummy://")
+    # See http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
+    Base.INSTALLED_APPS.insert(0, "whitenoise.runserver_nostatic")
+
+
+class Prod(Base):
+    # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#csrf-cookie-secure
+    CSRF_COOKIE_SECURE = True
+    # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#session-cookie-secure
+    SESSION_COOKIE_SECURE = True
+
+

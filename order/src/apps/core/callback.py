@@ -5,10 +5,11 @@ from .models import Order
 
 
 def callback(payload: Payload):
+    order_id = payload.body["order_id"]
+    status = payload.body["status"]
     with transaction.atomic():
-        order_id = payload.body["order_id"]
-        status = payload.body["status"]
         order = Order.objects.get(order_id=order_id)
-        order.status = status
-        order.save()
+        if not order.status == status:
+            order.status = status
+            order.save()
         payload.save()

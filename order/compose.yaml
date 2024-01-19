@@ -29,7 +29,7 @@ services:
   order-subscribe:
     build:
       context: .
-    command: [ "python", "manage.py", "subscribe", "src.apps.core.callback.callback", "/exchange/saga/stock.v1", "stock.v1" ]
+    command: [ "python", "manage.py", "subscribe", "src.apps.core.callback.callback", "/exchange/saga/order.v1", "order.v1" ]
     volumes:
       - .:/app
     env_file:
