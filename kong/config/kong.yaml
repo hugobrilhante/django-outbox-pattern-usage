@@ -1,0 +1,23 @@
+  # a very minimal declarative config file
+_format_version: "2.1"
+_transform: true
+
+services:
+- name: order
+  url: http://order:8000
+  routes:
+  - name: order
+    paths:
+    - /order
+- name: stock
+  url: http://stock:8001
+  routes:
+  - name: stock
+    paths:
+    - /stock
+- name: payment
+  url: http://payment:8002
+  routes:
+  - name: payment
+    paths:
+    - /payment

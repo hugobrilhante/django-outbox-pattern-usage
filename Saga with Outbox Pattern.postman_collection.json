@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "api/v1/orders/",
+			"name": "order/api/v1/orders/",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -21,7 +21,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/v1/orders/",
+					"raw": "http://127.0.0.1:8080/order/api/v1/orders/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -29,8 +29,9 @@
 						"0",
 						"1"
 					],
-					"port": "8000",
+					"port": "8080",
 					"path": [
+						"order",
 						"api",
 						"v1",
 						"orders",
@@ -41,7 +42,7 @@
 			"response": []
 		},
 		{
-			"name": "api/v1/orders/",
+			"name": "order/api/v1/orders/",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -58,7 +59,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/v1/orders/",
+					"raw": "http://127.0.0.1:8080/order/api/v1/orders/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -66,8 +67,9 @@
 						"0",
 						"1"
 					],
-					"port": "8000",
+					"port": "8080",
 					"path": [
+						"order",
 						"api",
 						"v1",
 						"orders",
@@ -78,7 +80,7 @@
 			"response": []
 		},
 		{
-			"name": "api/v1/stocks/",
+			"name": "stock/api/v1/stocks/",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -95,7 +97,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8001/api/v1/stocks/",
+					"raw": "http://127.0.0.1:8080/stock/api/v1/stocks/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -103,8 +105,9 @@
 						"0",
 						"1"
 					],
-					"port": "8001",
+					"port": "8080",
 					"path": [
+						"stock",
 						"api",
 						"v1",
 						"stocks",
@@ -115,7 +118,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/payments/",
+			"name": "stock/api/v1/reservations/",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -132,7 +135,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8001/api/v1/reservations/",
+					"raw": "http://127.0.0.1:8080/stock/api/v1/reservations/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -140,8 +143,9 @@
 						"0",
 						"1"
 					],
-					"port": "8001",
+					"port": "8080",
 					"path": [
+						"stock",
 						"api",
 						"v1",
 						"reservations",
@@ -152,7 +156,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/payments/",
+			"name": "payment/api/v1/payments/",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -169,7 +173,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8002/api/v1/payments/",
+					"raw": "http://127.0.0.1:8080/payment/api/v1/payments/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -177,8 +181,9 @@
 						"0",
 						"1"
 					],
-					"port": "8002",
+					"port": "8080",
 					"path": [
+						"payment",
 						"api",
 						"v1",
 						"payments",

@@ -17,6 +17,7 @@ echo "Running migrations..."
 source manage.sh order migrate > /dev/null 2>&1
 source manage.sh stock migrate > /dev/null 2>&1
 source manage.sh payment migrate > /dev/null 2>&1
+source run.sh up kong-db > /dev/null 2>&1
 
 echo "Loading data..."
 
@@ -39,4 +40,4 @@ docker compose stop rabbitmq > /dev/null 2>&1
 
 echo "Starting services..."
 
-source run.sh up order stock payment > /dev/null 2>&1
+source run.sh up order stock payment rabbitmq kong> /dev/null 2>&1

@@ -1,10 +1,50 @@
 version: '3.9'
+
 services:
+  # Kong Services
+  kong:
+    profiles: [ kong ]
+    extends:
+      file: kong/compose.yaml
+      service: kong
+
+  # Kong Migrations Service
+  kong-migrations:
+    profiles: [ kong-db ]
+    extends:
+      file: kong/compose.yaml
+      service: kong-migrations
+    depends_on:
+      kong-db:
+        condition: service_healthy
+
+  # Kong Migrations Up Service
+  kong-migrations-up:
+    profiles: [ kong-db ]
+    extends:
+      file: kong/compose.yaml
+      service: kong-migrations-up
+    depends_on:
+      kong-db:
+        condition: service_healthy
+
+  # Kong Database Service
+  kong-db:
+    profiles: [ kong-db ]
+    extends:
+      file: kong/compose.yaml
+      service: kong-db
+
+  # Order Services
   order:
     profiles: [ order ]
     extends:
       file: order/compose.yaml
       service: order-service
+    networks:
+      - kong-net
+
+  # Order Publish Service
   order-publish:
     profiles: [ order ]
     extends:
@@ -13,6 +53,8 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+
+  # Order Subscribe Service
   order-subscribe:
     profiles: [ order ]
     extends:
@@ -21,16 +63,24 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+
+  # Order Database Service
   order-db:
     profiles: [ order ]
     extends:
       file: order/compose.yaml
       service: order-db
+
+  # Stock Services
   stock:
     profiles: [ stock ]
     extends:
       file: stock/compose.yaml
       service: stock-service
+    networks:
+      - kong-net
+
+  # Stock Publish Service
   stock-publish:
     profiles: [ stock ]
     extends:
@@ -39,6 +89,8 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+
+  # Stock Subscribe Service
   stock-subscribe:
     profiles: [ stock ]
     extends:
@@ -47,16 +99,24 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+
+  # Stock Database Service
   stock-db:
     profiles: [ stock ]
     extends:
       file: stock/compose.yaml
       service: stock-db
+
+  # Payment Services
   payment:
     profiles: [ payment ]
     extends:
       file: payment/compose.yaml
       service: payment-service
+    networks:
+      - kong-net
+
+  # Payment Publish Service
   payment-publish:
     profiles: [ payment ]
     extends:
@@ -65,6 +125,8 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+
+  # Payment Subscribe Service
   payment-subscribe:
     profiles: [ payment ]
     extends:
@@ -73,17 +135,22 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+
+  # Payment Database Service
   payment-db:
     profiles: [ payment ]
     extends:
       file: payment/compose.yaml
       service: payment-db
+
+  # RabbitMQ Service
   rabbitmq:
+    profiles: [ rabbitmq ]
     image: rabbitmq:3.9.29-management
     volumes:
       - ./rabbitmq:/etc/rabbitmq/
     healthcheck:
-      test: ["CMD-SHELL","rabbitmq-diagnostics -q ping"]
+      test: [ "CMD-SHELL","rabbitmq-diagnostics -q ping" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -93,11 +160,34 @@ services:
       - "61613:61613"
     networks:
       - saga
+
 networks:
+  # Network for Kong Services
+  kong-net:
+    external: false
+
+  # Network for RabbitMQ
   saga:
     driver: bridge
 
 volumes:
+  # Volumes for Data Storage
   order-db-data:
   stock-db-data:
   payment-db-data:
+
+  # Volumes for Kong
+  kong_data: {}
+  kong_prefix_vol:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+  kong_tmp_vol:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+
+secrets:
+  # Secret for Kong PostgreSQL Password
+  kong_postgres_password:
+    file: ./kong/POSTGRES_PASSWORD
