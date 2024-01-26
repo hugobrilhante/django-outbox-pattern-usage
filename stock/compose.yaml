@@ -2,6 +2,8 @@ services:
   stock-service:
     build:
       context: .
+    ports:
+      - 8001:8001
     volumes:
       - .:/app
     env_file:
