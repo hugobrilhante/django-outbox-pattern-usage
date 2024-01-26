@@ -1,4 +1,6 @@
 # 🌐 Saga with Outbox Pattern: Orchestrating Distributed Transactions in Microservices
+[![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
+[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](README.pt-br.md)
 
 This repository demonstrates the Outbox Pattern in microservices, leveraging the Django Outbox Pattern library developed at [@juntossomosmais](https://github.com/juntossomosmais/django-outbox-pattern).
 
