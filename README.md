@@ -57,7 +57,7 @@ This repository provides configuration files for deploying three Django services
 2. Run the start script:
 
     ```bash
-    ./start.sh
+    ./scripts/start.sh
     ```
 
 3. Access services via:
@@ -91,7 +91,7 @@ This repository provides configuration files for deploying three Django services
 2. Run stop script:
 
     ```bash
-    ./stop.sh
+    ./scripts/stop.sh
     ```
 
 ## 🚀 Usage Instructions with Kubernetes

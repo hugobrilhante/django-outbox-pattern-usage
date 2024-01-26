@@ -14,16 +14,16 @@ check_status() {
 
 echo "Running migrations..."
 
-source manage.sh order migrate > /dev/null 2>&1
-source manage.sh stock migrate > /dev/null 2>&1
-source manage.sh payment migrate > /dev/null 2>&1
-source run.sh up kong-db > /dev/null 2>&1
+source scripts/manage.sh order migrate > /dev/null 2>&1
+source scripts/manage.sh stock migrate > /dev/null 2>&1
+source scripts/manage.sh payment migrate > /dev/null 2>&1
+source scripts/run.sh up kong-db > /dev/null 2>&1
 
 echo "Loading data..."
 
-source manage.sh order loaddata order > /dev/null 2>&1
-source manage.sh stock loaddata stock > /dev/null 2>&1
-source manage.sh payment loaddata payment > /dev/null 2>&1
+source scripts/manage.sh order loaddata order > /dev/null 2>&1
+source scripts/manage.sh stock loaddata stock > /dev/null 2>&1
+source scripts/manage.sh payment loaddata payment > /dev/null 2>&1
 
 # Starting RabbitMQ to create the exchange
 docker compose up -d rabbitmq > /dev/null 2>&1
@@ -40,4 +40,4 @@ docker compose stop rabbitmq > /dev/null 2>&1
 
 echo "Starting services..."
 
-source run.sh up order stock payment rabbitmq kong> /dev/null 2>&1
+source scripts/run.sh up order stock payment rabbitmq kong> /dev/null 2>&1
