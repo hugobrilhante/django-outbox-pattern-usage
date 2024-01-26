@@ -31,13 +31,13 @@ An e-commerce system uses microservices (Order, Stock, and Payment) to manage or
 7. Order service periodically checks the Outbox table to process pending messages.
 8. If successful, the order is marked as confirmed, and the customer is notified.
 
-![Flow](flow.png)
+![Flow](docs/flow.png)
 
 ### 🏗️ Infrastructure 
 
 This repository provides configuration files for deploying three Django services (Order, Stock, Payment) on Kubernetes and Docker Compose. Each service has its PostgreSQL database, and RabbitMQ facilitates communication. Kong serves as an API gateway and microservices management layer.
 
-![Architecture](architecture.png)
+![Architecture](docs/architecture.png)
 
 ### 🛠️ Technologies Used
 
@@ -76,7 +76,7 @@ This repository provides configuration files for deploying three Django services
 
 1. Install [Postman](https://www.postman.com/downloads/).
 
-2. Import the Postman [collection](Saga%20with%20Outbox%20Pattern.postman_collection.json).
+2. Import the Postman [collection](docs/saga.postman_collection.json).
 
 3. Collection contains scenarios:
    - **Unreserved Stock:** Create order with quantity > 10.
