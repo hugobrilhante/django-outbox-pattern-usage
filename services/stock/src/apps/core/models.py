@@ -11,7 +11,15 @@ class Stock(models.Model):
         return f"Product {self.product_id} - Available: {self.quantity}"
 
 
-@publish([Config(destination='/exchange/saga/order', version="v1", serializer='reservation_serializer')])
+@publish(
+    [
+        Config(
+            destination="/exchange/saga/order",
+            version="v1",
+            serializer="reservation_serializer",
+        )
+    ]
+)
 class Reservation(models.Model):
     STATUS_CHOICES = (
         ("reserved", "Reserved"),
@@ -24,10 +32,7 @@ class Reservation(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
 
     def reservation_serializer(self):
-        return {
-            "order_id": self.order_id,
-            "status": self.status
-        }
+        return {"order_id": self.order_id, "status": self.status}
 
     def __str__(self):
         return f"Product {self.product_id} - Order: {self.order_id} - Quantity: {self.quantity} - Status: {self.status}"

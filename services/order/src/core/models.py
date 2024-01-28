@@ -3,17 +3,27 @@ from django_outbox_pattern.decorators import Config
 from django_outbox_pattern.decorators import publish
 
 
-@publish([
-    Config(destination='/exchange/saga/stock', version="v1", serializer='order_serializer'),
-    Config(destination='/exchange/saga/payment', version="v1", serializer='order_serializer')
-])
+@publish(
+    [
+        Config(
+            destination="/exchange/saga/stock",
+            version="v1",
+            serializer="order_serializer",
+        ),
+        Config(
+            destination="/exchange/saga/payment",
+            version="v1",
+            serializer="order_serializer",
+        ),
+    ]
+)
 class Order(models.Model):
     STATUS_CHOICES = (
         ("created", "Created"),
         ("reserved", "Reserved"),
         ("not_reserved", "Not Reserved"),
         ("payment_confirmed", "Payment Confirmed"),
-        ("payment_denied", "Payment Denied")
+        ("payment_denied", "Payment Denied"),
     )
 
     order_id = models.AutoField(primary_key=True)
@@ -31,7 +41,7 @@ class Order(models.Model):
             "order_id": self.order_id,
             "product_id": self.product_id,
             "quantity": self.quantity,
-            "status": self.status
+            "status": self.status,
         }
 
     def __str__(self):

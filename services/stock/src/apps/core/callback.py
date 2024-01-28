@@ -17,9 +17,13 @@ def callback(payload: Payload):
     with transaction.atomic():
         stock = Stock.objects.get(product_id=product_id)
         try:
-            reservation = Reservation.objects.get(product_id=product_id, order_id=order_id)
+            reservation = Reservation.objects.get(
+                product_id=product_id, order_id=order_id
+            )
         except Reservation.DoesNotExist:
-            reservation = Reservation(product_id=product_id, order_id=order_id, quantity=quantity)
+            reservation = Reservation(
+                product_id=product_id, order_id=order_id, quantity=quantity
+            )
         if status == CREATED:
             if quantity <= stock.quantity:
                 stock.quantity -= quantity

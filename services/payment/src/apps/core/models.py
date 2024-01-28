@@ -5,7 +5,15 @@ from django_outbox_pattern.decorators import Config
 from django_outbox_pattern.decorators import publish
 
 
-@publish([Config(destination='/exchange/saga/order', version="v1", serializer='payment_serializer')])
+@publish(
+    [
+        Config(
+            destination="/exchange/saga/order",
+            version="v1",
+            serializer="payment_serializer",
+        )
+    ]
+)
 class Payment(models.Model):
     STATUS_CHOICES = (
         ("payment_confirmed", "Payment Confirmed"),
@@ -19,10 +27,7 @@ class Payment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def payment_serializer(self):
-        return {
-            "order_id": self.order_id,
-            "status": self.status
-        }
+        return {"order_id": self.order_id, "status": self.status}
 
     def __str__(self):
         return f"Payment to Order: {self.order_id} - Amount: {self.amount} - Status: {self.status}"

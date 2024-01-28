@@ -163,6 +163,8 @@ class Base(Configuration):
             },
         },
     }
+
+
 class Dev(Base):
     # See https://docs.djangoproject.com/en/4.2/topics/cache/#dummy-caching-for-development
     CACHES = values.CacheURLValue("dummy://")
@@ -175,5 +177,3 @@ class Prod(Base):
     CSRF_COOKIE_SECURE = True
     # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#session-cookie-secure
     SESSION_COOKIE_SECURE = True
-
-
