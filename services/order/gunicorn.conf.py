@@ -23,19 +23,19 @@ logconfig_dict = {
     "version": 1,
     "formatters": {
         "json": {
-            "()": "logging.Formatter",
-            "format": '{"loggerName":"%(name)s","timestamp":"%(asctime)s","severity":"%(levelname)s","message":"%(message)s"}',
+            "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+            "format": "%(asctime)s %(name)s %(levelname)s %(message)s %(pathname)s %(lineno)d",
         },
     },
     "handlers": {
         "access": {
             "class": "logging.FileHandler",
-            "filename": "logs/access.log",
+            "filename": "/var/log/gunicorn/access.log",
             "formatter": "json",
         },
         "error": {
             "class": "logging.FileHandler",
-            "filename": "logs/error.log",
+            "filename": "/var/log/gunicorn/error.log",
             "formatter": "json",
         },
     },

@@ -98,4 +98,4 @@ This repository provides configuration files for deploying three Django services
 
 ## 🚀 Usage Instructions with Kubernetes
 
-**Note:** Kubernetes deployment instructions coming soon. Stay tuned!
+The usage instructions for Kubernetes can be found in the [k8s](k8s/README.md) file.

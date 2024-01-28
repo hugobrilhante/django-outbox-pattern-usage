@@ -1,14 +1,14 @@
-# Kong Ingress Controller Installation Guide
+# Kong Ingress Controller Installation Guide 🛠️
 
 This guide will walk you through the steps to install Kong Ingress Controller on your Kubernetes cluster.
 
-### Prerequisites
+### Prerequisites ✔️
 
 - [Access to a Kubernetes cluster](../k3d/README.md)
 - `kubectl` configured to communicate with your cluster
 - [Helm installed](https://helm.sh/docs/intro/install/)
 
-### Installation Steps
+### Installation Steps 🚀
 
 ## Install the Gateway APIs
 
@@ -44,7 +44,7 @@ This guide will walk you through the steps to install Kong Ingress Controller on
    After installation, ensure that Kong Ingress Controller pods are running:
 
     ```bash
-    curl -i 'localhost:8000'
+    curl -i 'localhost:8080'
     ```
 
    The results should look like this:
@@ -67,7 +67,7 @@ This guide will walk you through the steps to install Kong Ingress Controller on
    
    If you encounter `curl: (52) Empty reply from server`, please wait a moment and try again. 
 
-### Uninstallation
+### Uninstallation ❌
 
 To uninstall Kong Ingress Controller, simply delete the Helm release:
 

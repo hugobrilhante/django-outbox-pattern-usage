@@ -12,10 +12,11 @@ django = "^4.2.7"
 django-configurations = {extras = ["cache", "database", "email", "search"], version = "^2.5"}
 whitenoise = "^6.6.0"
 gunicorn = "^21.2.0"
-psycopg2 = "^2.9.9"
 djangorestframework = "^3.14.0"
 python3-logstash = "^0.4.80"
 django-outbox-pattern = "^1.0.1"
+psycopg2-binary = "^2.9.9"
+python-json-logger = "^2.0.7"
 
 
 [tool.poetry.group.dev.dependencies]

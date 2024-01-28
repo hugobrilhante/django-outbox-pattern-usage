@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 
 from configurations import Configuration, values
@@ -143,21 +144,21 @@ class Base(Configuration):
         "disable_existing_loggers": False,
         "formatters": {
             "json": {
-                "()": "logging.Formatter",
-                "format": '{"loggerName":"%(name)s","timestamp":"%(asctime)s","severity":"%(levelname)s","message":"%(message)s"}',
+                "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+                "format": "%(asctime)s %(name)s %(levelname)s %(message)s %(pathname)s %(lineno)d",
             },
         },
         "handlers": {
-            "file": {
+            "stdout": {
                 "level": "INFO",
-                "class": "logging.FileHandler",
-                "filename": "logs/info.log",
+                "class": "logging.StreamHandler",
+                "stream": sys.stdout,
                 "formatter": "json",
             },
         },
         "loggers": {
-            "": {
-                "handlers": ["file"],
+            "django": {
+                "handlers": ["stdout"],
                 "level": "INFO",
                 "propagate": True,
             },
