@@ -43,3 +43,11 @@ k3d cluster create saga --port '8000:30000@loadbalancer'
 ```
 
 This command creates a Kubernetes cluster named "saga" with port forwarding configured to forward traffic from port 8000 on the host to port 30000 on the load balancer, along with three server nodes. This setup is suitable for scenarios where you only require server nodes for your Kubernetes environment.
+
+### Deleting a Cluster
+
+To delete an cluste use this command:
+
+```bash
+k3d cluster delete saga
+```
