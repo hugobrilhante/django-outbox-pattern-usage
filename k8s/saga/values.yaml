@@ -13,7 +13,7 @@ name: "app"
 
 port: 8000
 
-# To simplify my examples. There are other means for the correct use of credentials.A3
+# To simplify my examples. There are other means for the correct use of credentials.
 secret_key: "secret_key"
 
 postgres:
