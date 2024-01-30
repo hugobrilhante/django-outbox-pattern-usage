@@ -1,0 +1,14 @@
+# Default values for saga.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicas: 1
+
+image:
+  repository: ""
+  pullPolicy: IfNotPresent
+  tag: "v1"
+
+name: "app"
+
+port: 8000

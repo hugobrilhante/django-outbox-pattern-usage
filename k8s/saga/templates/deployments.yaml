@@ -1,0 +1,86 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.name}}-deployment
+  labels:
+    app: {{.Values.name}}
+spec:
+  replicas: {{.Values.replicas}}
+  selector:
+    matchLabels:
+      app: {{.Values.name}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.name}}
+    spec:
+      containers:
+        - name: {{.Values.name}}-container
+          image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: {{.Values.port}}
+          envFrom:
+            - configMapRef:
+                name: {{.Values.name}}-config-map
+            - secretRef:
+                name: {{.Values.name}}-secret
+          resources:
+            limits:
+              cpu: "2"
+              memory: "1024Mi"
+            requests:
+              cpu: "1"
+              memory: "512Mi"
+      initContainers:
+        - name: migrations-container
+          image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
+          command: [ "/bin/sh" ]
+          args:
+            - "-c"
+            - python manage.py migrate
+          envFrom:
+            - configMapRef:
+                name: {{.Values.name}}-config-map
+            - secretRef:
+                name: {{.Values.name}}-secret
+        - name: loaddata-container
+          image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
+          command: [ "/bin/sh" ]
+          args:
+            - "-c"
+            - python manage.py loaddata {{.Values.name}}
+          envFrom:
+            - configMapRef:
+                name: {{.Values.name}}-config-map
+            - secretRef:
+                name: {{.Values.name}}-secret
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.name}}-db-deployment
+  labels:
+    app: {{.Values.name}}-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{.Values.name}}-db
+  template:
+    metadata:
+      labels:
+        app: {{.Values.name}}-db
+    spec:
+      containers:
+        - name: {{.Values.name}}-db-container
+          image: postgres:15
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: {{.Values.name}}-secret
+      restartPolicy: Always

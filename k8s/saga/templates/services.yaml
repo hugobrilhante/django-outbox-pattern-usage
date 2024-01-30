@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.name}}-service
+  labels:
+    app: {{.Values.name}}
+spec:
+  selector:
+    app: {{.Values.name}}
+  ports:
+    - protocol: TCP
+      port: {{.Values.port}}
+      targetPort: {{.Values.port}}
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.name}}-db-service
+  labels:
+    app: {{.Values.name}}-db
+spec:
+  selector:
+    app: {{.Values.name}}-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP

@@ -21,7 +21,7 @@ This guide will walk you through the steps to install Kong Ingress Controller on
 2. **Create a Gateway and GatewayClass instance to use.**
 
     ```bash
-    kubectl apply -f k8s/kong/kong-gateway.yaml
+    kubectl apply -f kong/kong-gateway.yaml
     ```
 
 3. **Helm Chart Installation**
@@ -36,7 +36,7 @@ This guide will walk you through the steps to install Kong Ingress Controller on
     ```
     3. Install Kong Ingress Controller and Kong Gateway with Helm:
     ```bash
-       helm install kong kong/ingress -n kong --create-namespace --values k8s/kong/values.yaml
+       helm install kong kong/ingress -n kong --create-namespace --values kong/values.yaml
     ```
 
 4. **Verify Installation**

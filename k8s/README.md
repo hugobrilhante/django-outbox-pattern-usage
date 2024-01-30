@@ -22,16 +22,16 @@ To install the Kong Ingress Controller for managing external access to services 
 
 2. Follow the instructions in the README.md file located in the `kong` directory to install the Kong Ingress Controller.
 
-## Applying Manifests with kubectl 💻
+## Installing Chart using Helm 📊
 
-After setting up the Kubernetes cluster and installing the Kong Ingress Controller, you can apply manifests to deploy and manage your applications:
+After setting up the Kubernetes cluster and installing the Kong Ingress Controller:
 
-1. Make sure you are still in the `k8s` directory.
+1. Navigate to the directory containing the `order` chart and its `values.yaml` file.
 
-2. Use `kubectl` to apply all the manifests located in the `order` directory:
+2. Use Helm to create a release named "order" using the Saga chart and values from `order/values.yaml`:
 
    ```bash
-   kubectl apply -f order/
+   helm install order ./saga --values order/values.yaml
    ```
 
-That's it! You've now set up a Kubernetes cluster with k3d, installed the Kong Ingress Controller, and applied all manifests from the `order` directory using `kubectl`. You're ready to deploy and manage your applications. 🎉
+This creates a Helm release named "order" with the configurations specified in `order/values.yaml`.

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: order-config-map
+  name: {{.Values.name}}-config-map
 data:
   DJANGO_DEBUG: "True"
   DJANGO_ALLOWED_HOSTS: "*"
