@@ -1,0 +1,64 @@
+services:
+  order-service:
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - saga
+    depends_on:
+      order-db:
+        condition: service_healthy
+  order-publish:
+    build:
+      context: .
+    command: [ "python", "manage.py", "publish" ]
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - saga
+    depends_on:
+      order-db:
+        condition: service_healthy
+  order-subscribe:
+    build:
+      context: .
+    command: [ "python", "manage.py", "subscribe", "src.core.callback.callback", "/exchange/saga/order.v1", "order.v1" ]
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - saga
+    depends_on:
+      order-db:
+        condition: service_healthy
+  order-db:
+    image: postgres:16
+    platform: linux/amd64
+    restart: always
+    volumes:
+      - order-db-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    expose:
+      - 5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user} -d ${POSTGRES_DB:-db}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - saga
+volumes:
+  order-db-data:
+
+networks:
+  saga:
+    driver: bridge
