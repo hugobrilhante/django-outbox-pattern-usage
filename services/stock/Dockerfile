@@ -4,8 +4,8 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/engine/reference/builder/
 
-ARG PYTHON_VERSION=3.11.3
-FROM python:${PYTHON_VERSION} as base
+ARG PYTHON_VERSION=3.12.1
+FROM python:${PYTHON_VERSION}-alpine as base
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -29,7 +29,7 @@ RUN adduser \
     --shell "/sbin/nologin" \
     --no-create-home \
     --uid "${UID}" \
-    appuser
+    django
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
@@ -39,11 +39,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
+# Creating folder for gunicorn logs.
+RUN mkdir /var/log/gunicorn
+
+# Granting log permissions to non-privileged user.
+RUN chown -R django:django /var/log/gunicorn
+
 # Switch to the non-privileged user to run the application.
-USER appuser
+USER django
 
 # Copy the source code into the container.
-COPY . .
+COPY --chown=django:django . .
 
 # Expose the port that the application listens on.
 EXPOSE 8001

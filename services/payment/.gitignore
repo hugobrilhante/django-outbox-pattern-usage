@@ -5,7 +5,7 @@
 .ruff_cache
 
 # Envs
-../.env
+.env
 .venv
 
 # Staticfiles

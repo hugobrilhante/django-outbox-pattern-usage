@@ -12,3 +12,13 @@ image:
 name: "app"
 
 port: 8000
+
+# To simplify my examples. There are other means for the correct use of credentials.A3
+secret_key: "secret_key"
+
+postgres:
+  db: "db"
+  user: "user"
+  password: "password"
+
+database_url: "postgres://user:password@db-service:5432/db"

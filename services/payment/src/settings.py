@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+import sys
+
 from pathlib import Path
 
 from configurations import Configuration, values
@@ -43,7 +45,7 @@ class Base(Configuration):
         "rest_framework",
         "django_outbox_pattern",
         # App locals
-        "src.apps.core.apps.CoreConfig",
+        "src.core.apps.CoreConfig",
     ]
 
     MIDDLEWARE = [
@@ -138,32 +140,6 @@ class Base(Configuration):
         "DEFAULT_STOMP_HOST_AND_PORTS": [("rabbitmq", 61613)],
     }
 
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "json": {
-                "()": "logging.Formatter",
-                "format": '{"loggerName":"%(name)s","timestamp":"%(asctime)s","severity":"%(levelname)s","message":"%(message)s"}',
-            },
-        },
-        "handlers": {
-            "file": {
-                "level": "INFO",
-                "class": "logging.FileHandler",
-                "filename": "logs/info.log",
-                "formatter": "json",
-            },
-        },
-        "loggers": {
-            "": {
-                "handlers": ["file"],
-                "level": "INFO",
-                "propagate": True,
-            },
-        },
-    }
-
 
 class Dev(Base):
     # See https://docs.djangoproject.com/en/4.2/topics/cache/#dummy-caching-for-development
@@ -177,3 +153,29 @@ class Prod(Base):
     CSRF_COOKIE_SECURE = True
     # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#session-cookie-secure
     SESSION_COOKIE_SECURE = True
+
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "json": {
+                "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+                "format": "%(asctime)s %(name)s %(levelname)s %(message)s %(pathname)s %(lineno)d",
+            },
+        },
+        "handlers": {
+            "stdout": {
+                "level": "INFO",
+                "class": "logging.StreamHandler",
+                "stream": sys.stdout,
+                "formatter": "json",
+            },
+        },
+        "loggers": {
+            "": {
+                "handlers": ["stdout"],
+                "level": "INFO",
+                "propagate": True,
+            },
+        },
+    }

@@ -1,5 +1,5 @@
 services:
-  stock-service:
+  app:
     build:
       context: .
     ports:
@@ -8,57 +8,23 @@ services:
       - .:/app
     env_file:
       - .env
-    networks:
-      - saga
     depends_on:
-      stock-db:
+      db:
         condition: service_healthy
-  stock-publish:
-    build:
-      context: .
-    command: [ "python", "manage.py", "publish" ]
-    volumes:
-      - .:/app
-    env_file:
-      - .env
-    networks:
-      - saga
-    depends_on:
-      stock-db:
-        condition: service_healthy
-  stock-subscribe:
-    build:
-      context: .
-    command: [ "python", "manage.py", "subscribe", "src.apps.core.callback.callback", "/exchange/saga/stock.v1", "stock.v1" ]
-    volumes:
-      - .:/app
-    env_file:
-      - .env
-    networks:
-      - saga
-    depends_on:
-      stock-db:
-        condition: service_healthy
-  stock-db:
-    image: postgres:15
-    platform: linux/amd64
+  db:
+    image: postgis/postgis:16-3.4
     restart: always
     volumes:
-      - stock-db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
     env_file:
       - .env
     expose:
       - 5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user} -d ${POSTGRES_DB:-db}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user} -d ${POSTGRES_DB:-db}"  ]
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - saga
 volumes:
-  stock-db-data:
+  db-data:
 
-networks:
-  saga:
-    driver: bridge

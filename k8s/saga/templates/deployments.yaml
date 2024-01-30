@@ -18,7 +18,7 @@ spec:
       containers:
         - name: {{.Values.name}}-container
           image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{.Values.image.pullPolicy}}
           ports:
             - containerPort: {{.Values.port}}
           envFrom:
@@ -80,7 +80,11 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5432
-          envFrom:
-            - secretRef:
-                name: {{.Values.name}}-secret
+          env:
+            - name: POSTGRES_DB
+              value: {{.Values.postgres.db | quote}}
+            - name: POSTGRES_USER
+              value: {{.Values.postgres.user | quote}}
+            - name: POSTGRES_PASSWORD
+              value: {{.Values.postgres.password | quote}}
       restartPolicy: Always

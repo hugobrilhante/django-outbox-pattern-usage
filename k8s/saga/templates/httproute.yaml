@@ -11,7 +11,7 @@ spec:
  - matches:
      - path:
          type: PathPrefix
-         value: /
+         value: /{{.Values.name}}
    backendRefs:
    - name: {{.Values.name}}-service
      kind: Service

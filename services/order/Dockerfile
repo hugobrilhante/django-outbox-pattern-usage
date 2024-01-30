@@ -55,4 +55,4 @@ COPY --chown=django:django . .
 EXPOSE 8000
 
 # Run the application.
-CMD ["gunicorn", "--preload", "-c", "/app/gunicorn.conf.py", "src.wsgi"]
+CMD ["gunicorn", "-c", "/app/gunicorn.conf.py", "src.wsgi"]

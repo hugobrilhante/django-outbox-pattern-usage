@@ -1,13 +1,13 @@
 replicas: 1
 
 image:
-  repository: "hugobrilhante/order"
+  repository: "hugobrilhante/payment"
   pullPolicy: Always
   tag: "v1"
 
-name: "order"
+name: "payment"
 
-port: 8000
+port: 8002
 
 secret_key: "secret_key"
 
@@ -16,4 +16,4 @@ postgres:
   user: "user"
   password: "password"
 
-database_url: "postgres://user:password@order-db-service:5432/db"
+database_url: "postgres://user:password@payment-db-service:5432/db"
