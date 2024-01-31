@@ -2,36 +2,39 @@
 
 This guide will walk you through setting up a Kubernetes cluster using k3d. Make sure you have Docker installed on your system before proceeding.
 
-## Getting Started 🚀
+# Kubernetes Cluster Setup
 
-Follow these steps to create a Kubernetes cluster using k3d:
+To set up the Kubernetes cluster along with Gateway API and Kong Ingress Controller, follow these steps:
 
-1. Make sure you are in the `k8s` directory:
+1. Navigate to the `k8s` directory.
+2. Run the `setup.sh` script.
 
-   ```bash
-   cd k8s
-   ```
+This script will automatically:
 
-2. Follow the instructions in the README.md file located in the `k3d` directory to create a Kubernetes cluster using k3d.
+🚀 Install k3d, kubectl, and Helm if not already installed.
 
-## Installing Kong Ingress Controller 🦍
+🌟 Create a k3d cluster named "saga" with port mapping for load balancing.
 
-To install the Kong Ingress Controller for managing external access to services in your Kubernetes cluster:
+🌟 Install the Gateway API and apply Kong gateway configuration.
 
-1. Make sure you are still in the `k8s` directory.
+🌟 Add the Kong Helm repository and update Helm repositories.
 
-2. Follow the instructions in the README.md file located in the `kong` directory to install the Kong Ingress Controller.
+🌟 Install the Kong Ingress Controller.
 
-## Installing Chart using Helm 📊
+After running the script, your Kubernetes cluster will be set up and ready to use with Kong as the Ingress Controller.
+
+## Installing order, stock and payment using Helm 📊
 
 After setting up the Kubernetes cluster and installing the Kong Ingress Controller:
 
-1. Navigate to the directory containing the `order` chart and its `values.yaml` file.
-
-2. Use Helm to create a release named "order" using the Saga chart and values from `order/values.yaml`:
+1. Use Helm to create the "order", "stock", and "payment" releases using the Saga chart and corresponding values:
 
    ```bash
    helm install order ./saga --values order/values.yaml
+   helm install stock ./saga --values stock/values.yaml
+   helm install payment ./saga --values payment/values.yaml
    ```
 
-This creates a Helm release named "order" with the configurations specified in `order/values.yaml`.
+This creates three Helm releases, "order", "stock", and "payment", with configurations specified in their respective `values.yaml` files.
+
+Please note that each command creates a specific Helm release with its own configurations.
