@@ -5,14 +5,14 @@ services:
   kong:
     profiles: [ kong ]
     extends:
-      file: docker/kong/compose.yaml
+      file: kong/compose.yaml
       service: kong
 
   # Kong Migrations Service
   kong-migrations:
     profiles: [ kong-db ]
     extends:
-      file: docker/kong/compose.yaml
+      file: kong/compose.yaml
       service: kong-migrations
     depends_on:
       kong-db:
@@ -22,7 +22,7 @@ services:
   kong-migrations-up:
     profiles: [ kong-db ]
     extends:
-      file: docker/kong/compose.yaml
+      file: kong/compose.yaml
       service: kong-migrations-up
     depends_on:
       kong-db:
@@ -32,14 +32,14 @@ services:
   kong-db:
     profiles: [ kong-db ]
     extends:
-      file: docker/kong/compose.yaml
+      file: kong/compose.yaml
       service: kong-db
 
   # Order Services
   order:
     profiles: [ order ]
     extends:
-      file: docker/services/order/compose.yaml
+      file: services/order/compose.yaml
       service: order-service
     networks:
       - kong-net
@@ -48,7 +48,7 @@ services:
   order-publish:
     profiles: [ order ]
     extends:
-      file: docker/services/order/compose.yaml
+      file: services/order/compose.yaml
       service: order-publish
     depends_on:
       rabbitmq:
@@ -58,7 +58,7 @@ services:
   order-subscribe:
     profiles: [ order ]
     extends:
-      file: docker/services/order/compose.yaml
+      file: services/order/compose.yaml
       service: order-subscribe
     depends_on:
       rabbitmq:
@@ -68,14 +68,14 @@ services:
   order-db:
     profiles: [ order ]
     extends:
-      file: docker/services/order/compose.yaml
+      file: services/order/compose.yaml
       service: order-db
 
   # Stock Services
   stock:
     profiles: [ stock ]
     extends:
-      file: docker/services/stock/compose.yaml
+      file: services/stock/compose.yaml
       service: stock-service
     networks:
       - kong-net
@@ -84,7 +84,7 @@ services:
   stock-publish:
     profiles: [ stock ]
     extends:
-      file: docker/services/stock/compose.yaml
+      file: services/stock/compose.yaml
       service: stock-publish
     depends_on:
       rabbitmq:
@@ -94,7 +94,7 @@ services:
   stock-subscribe:
     profiles: [ stock ]
     extends:
-      file: docker/services/stock/compose.yaml
+      file: services/stock/compose.yaml
       service: stock-subscribe
     depends_on:
       rabbitmq:
@@ -104,14 +104,14 @@ services:
   stock-db:
     profiles: [ stock ]
     extends:
-      file: docker/services/stock/compose.yaml
+      file: services/stock/compose.yaml
       service: stock-db
 
   # Payment Services
   payment:
     profiles: [ payment ]
     extends:
-      file: docker/services/payment/compose.yaml
+      file: services/payment/compose.yaml
       service: payment-service
     networks:
       - kong-net
@@ -120,7 +120,7 @@ services:
   payment-publish:
     profiles: [ payment ]
     extends:
-      file: docker/services/payment/compose.yaml
+      file: services/payment/compose.yaml
       service: payment-publish
     depends_on:
       rabbitmq:
@@ -130,7 +130,7 @@ services:
   payment-subscribe:
     profiles: [ payment ]
     extends:
-      file: docker/services/payment/compose.yaml
+      file: services/payment/compose.yaml
       service: payment-subscribe
     depends_on:
       rabbitmq:
@@ -140,7 +140,7 @@ services:
   payment-db:
     profiles: [ payment ]
     extends:
-      file: docker/services/payment/compose.yaml
+      file: services/payment/compose.yaml
       service: payment-db
 
   # RabbitMQ Service
@@ -190,4 +190,4 @@ volumes:
 secrets:
   # Secret for Kong PostgreSQL Password
   kong_postgres_password:
-    file: ./docker/kong/POSTGRES_PASSWORD
+    file: kong/POSTGRES_PASSWORD

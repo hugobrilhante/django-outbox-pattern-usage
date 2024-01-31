@@ -54,7 +54,10 @@ Este repositório fornece arquivos de configuração para implantar três servi�
 
 ### 🏁 Iniciando o Projeto
 
-1. Navegue até o diretório raiz do projeto.
+1. Navegue até o diretório [docker](docker).
+    ```bash
+       cd docker
+    ```
 
 2. Execute o script de início:
 
@@ -74,7 +77,123 @@ Este repositório fornece arquivos de configuração para implantar três servi�
    - Administração do Django: admin/admin
    - RabbitMQ: guest/guest
 
-### 🧪 Testando Cenários com Coleção do Postman
+### 🛑 Parando o Projeto
+
+1. Execute o script de parada:
+
+    ```bash
+    ./scripts/stop.sh
+    ```
+
+## 🚀 Instruções de Uso com Kubernetes
+
+Este guia irá orientá-lo na configuração de um cluster Kubernetes usando k3d. Certifique-se de ter o Docker instalado no seu sistema antes de prosseguir.
+
+### Configuração do Cluster Kubernetes
+
+Para configurar o cluster Kubernetes, siga estas etapas:
+
+1. Navegue até o diretório [k8s](k8s).
+    ```bash
+       cd k8s
+    ```
+2. Execute o script `setup.sh`.
+    ```bash
+   ./setup.sh
+    ```
+
+Este script irá automaticamente:
+
+🚀 Instalar k3d, kubectl e Helm se ainda não estiverem instalados.
+
+🌟 Criar um cluster k3d chamado "saga" com mapeamento de porta para balanceamento de carga.
+
+Após executar o script, seu cluster Kubernetes estará configurado e pronto para uso.
+
+### Instalando o Kong Ingress Controller
+
+1. **Instale os CRDs do Gateway API antes de instalar o Kong Ingress Controller.**
+
+    ```bash
+   kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+    ```
+
+2. **Crie uma instância de Gateway e GatewayClass para usar.**
+
+    ```bash
+    kubectl apply -f kong/kong-gateway.yaml
+    ```
+
+3. **Instalação do Helm Chart**
+
+    1. Adicione os charts do Helm do Kong:
+    ```bash
+       helm repo add kong https://charts.konghq.com
+    ```
+    2. Atualize o repositório:
+    ```bash
+       helm repo update
+    ```
+    3. Instale o Controlador de Ingress do Kong e o Gateway do Kong com Helm:
+    ```bash
+       helm install kong kong/ingress -n kong --create-namespace --values kong/values.yaml
+    ```
+
+4
+
+. **Verificar Instalação**
+
+   Após a instalação, verifique se os pods do Controlador de Ingress do Kong estão em execução:
+
+    ```bash
+    curl -i 'localhost:8080'
+    ```
+
+   Os resultados devem se parecer com isso:
+   ```bash
+   HTTP/1.1 404 Not Found
+   Date: Sun, 28 Jan 2024 19:14:45 GMT
+   Content-Type: application/json; charset=utf-8
+   Connection: keep-alive
+   Content-Length: 103
+   X-Kong-Response-Latency: 0
+   Server: kong/3.5.0
+   X-Kong-Request-Id: fa55be13bee8575984a67514efbe224c
+   
+   {
+     "message":"no Route matched with those values",
+     "request_id":"fa55be13bee8575984a67514efbe224c"
+   }   
+   ```
+   **Observação:**
+   
+   Se encontrar `curl: (52) Empty reply from server`, aguarde um momento e tente novamente. 
+
+### Instalando pedido, estoque e pagamento usando Helm 📊
+
+Após configurar o cluster Kubernetes e instalar o Controlador de Ingress do Kong:
+
+1. Use o Helm para criar os lançamentos "order", "stock" e "payment" usando o gráfico Saga e os valores correspondentes:
+
+   ```bash
+   helm install order ./saga --values services/order/values.yaml
+   helm install stock ./saga --values services/stock/values.yaml
+   helm install payment ./saga --values services/payment/values.yaml
+   ```
+
+Isso cria três lançamentos do Helm, "order", "stock" e "payment", com configurações especificadas em seus respectivos arquivos `values.yaml`.
+
+Observe que cada comando cria um lançamento do Helm específico com suas próprias configurações.
+
+### 🛑 Parando o Projeto
+
+1. Execute o comando de exclusão do cluster:
+
+```bash
+k3d cluster delete saga
+```
+
+## 🧪 Cenários de Teste com Coleção Postman
 
 1. Instale o [Postman](https://www.postman.com/downloads/).
 
@@ -84,18 +203,4 @@ Este repositório fornece arquivos de configuração para implantar três servi�
    - **Estoque Não Reservado:** Criar pedido com quantidade > 10.
    - **Pagamento Negado:** Criar pedido com valor > $1000.
 
-4. Execute as requisições para observar o comportamento do sistema.
-
-### 🛑 Parando o Projeto
-
-1. Navegue até o diretório raiz do projeto.
-
-2. Execute o script de parada:
-
-    ```bash
-    ./scripts/stop.sh
-    ```
-
-## 🚀 Instruções de Uso com Kubernetes
-
-**Nota:** Instruções de implantação no Kubernetes em breve. Fique atento!
+4. Execute as solicitações para observar o comportamento do sistema.

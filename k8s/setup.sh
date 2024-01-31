@@ -49,24 +49,5 @@ if ! command -v helm &> /dev/null; then
     fi
 fi
 
-# Install Gateway API
-echo "🌟 Installing Gateway API..."
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
-
-# Apply Kong gateway
-echo "🌟 Applying Kong gateway..."
-kubectl apply -f kong/kong-gateway.yaml
-
-# Add Kong Helm repository
-echo "🌟 Adding Kong Helm repository..."
-helm repo add kong https://charts.konghq.com
-
-# Update Helm repositories
-echo "🌟 Updating Helm repositories..."
-helm repo update
-
-# Install Kong Ingress Controller
-echo "🌟 Installing Kong Ingress Controller..."
-helm install kong kong/ingress -n kong --create-namespace --values kong/values.yaml
 
 echo "✅ Setup completed successfully!"

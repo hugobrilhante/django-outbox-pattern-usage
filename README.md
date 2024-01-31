@@ -54,7 +54,10 @@ This repository provides configuration files for deploying three Django services
 
 ### 🏁 Starting the Project
 
-1. Navigate to the project root directory.
+1. Navigate to the [docker](docker) directory.
+    ```bash
+       cd docker
+    ```
 
 2. Run the start script:
 
@@ -74,18 +77,6 @@ This repository provides configuration files for deploying three Django services
    - Django Admin: admin/admin
    - RabbitMQ: guest/guest
 
-### 🧪 Testing Scenarios with Postman Collection
-
-1. Install [Postman](https://www.postman.com/downloads/).
-
-2. Import the Postman [collection](docs/saga.postman_collection.json).
-
-3. Collection contains scenarios:
-   - **Unreserved Stock:** Create order with quantity > 10.
-   - **Denied Payment:** Create order with amount > $1000.
-
-4. Run requests to observe system behavior.
-
 ### 🛑 Stopping the Project
 
 1. Navigate to project root.
@@ -98,4 +89,119 @@ This repository provides configuration files for deploying three Django services
 
 ## 🚀 Usage Instructions with Kubernetes
 
-The usage instructions for Kubernetes can be found in the [k8s](k8s/README.md) file.
+This guide will walk you through setting up a Kubernetes cluster using k3d. Make sure you have Docker installed on your system before proceeding.
+
+### Kubernetes Cluster Setup
+
+To set up the Kubernetes cluster, follow these steps:
+
+1. Navigate to the [k8s](k8s) directory.
+    ```bash
+       cd k8s
+    ```
+2. Run the `setup.sh` script.
+    ```bash
+   ./setup.sh
+    ```
+
+This script will automatically:
+
+🚀 Install k3d, kubectl, and Helm if not already installed.
+
+🌟 Create a k3d cluster named "saga" with port mapping for load balancing.
+
+
+After running the script, your Kubernetes cluster will be set up and ready to use.
+
+### Install the Kong Ingress Controller
+
+1. **Install the Gateway API CRDs before installing Kong Ingress Controller.**
+
+    ```bash
+   kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+    ```
+
+2. **Create a Gateway and GatewayClass instance to use.**
+
+    ```bash
+    kubectl apply -f kong/kong-gateway.yaml
+    ```
+
+3. **Helm Chart Installation**
+
+    1. Add the Kong Helm charts:
+    ```bash
+       helm repo add kong https://charts.konghq.com
+    ```
+    2. Update repo:
+    ```bash
+       helm repo update
+    ```
+    3. Install Kong Ingress Controller and Kong Gateway with Helm:
+    ```bash
+       helm install kong kong/ingress -n kong --create-namespace --values kong/values.yaml
+    ```
+
+4. **Verify Installation**
+
+   After installation, ensure that Kong Ingress Controller pods are running:
+
+    ```bash
+    curl -i 'localhost:8080'
+    ```
+
+   The results should look like this:
+   ```bash
+   HTTP/1.1 404 Not Found
+   Date: Sun, 28 Jan 2024 19:14:45 GMT
+   Content-Type: application/json; charset=utf-8
+   Connection: keep-alive
+   Content-Length: 103
+   X-Kong-Response-Latency: 0
+   Server: kong/3.5.0
+   X-Kong-Request-Id: fa55be13bee8575984a67514efbe224c
+   
+   {
+     "message":"no Route matched with those values",
+     "request_id":"fa55be13bee8575984a67514efbe224c"
+   }   
+   ```
+    **Note:**
+   
+   If you encounter `curl: (52) Empty reply from server`, please wait a moment and try again. 
+
+### Installing order, stock and payment using Helm 📊
+
+After setting up the Kubernetes cluster and installing the Kong Ingress Controller:
+
+1. Use Helm to create the "order", "stock", and "payment" releases using the Saga chart and corresponding values:
+
+   ```bash
+   helm install order ./saga --values services/order/values.yaml
+   helm install stock ./saga --values services/stock/values.yaml
+   helm install payment ./saga --values services/payment/values.yaml
+   ```
+
+This creates three Helm releases, "order", "stock", and "payment", with configurations specified in their respective `values.yaml` files.
+
+Please note that each command creates a specific Helm release with its own configurations.
+
+### 🛑 Stopping the Project
+
+1. Run cluster delete command:
+
+```bash
+k3d cluster delete saga
+```
+
+## 🧪 Testing Scenarios with Postman Collection
+
+1. Install [Postman](https://www.postman.com/downloads/).
+
+2. Import the Postman [collection](docs/saga.postman_collection.json).
+
+3. Collection contains scenarios:
+   - **Unreserved Stock:** Create order with quantity > 10.
+   - **Denied Payment:** Create order with amount > $1000.
+
+4. Run requests to observe system behavior.
