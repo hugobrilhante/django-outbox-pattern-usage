@@ -1,12 +1,15 @@
 # 🌐 Saga with Outbox Pattern: Orchestrating Distributed Transactions in Microservices
+
 [![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
 [![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](README.pt-br.md)
 
-This repository demonstrates the Outbox Pattern in microservices, leveraging the Django Outbox Pattern library developed at [@juntossomosmais](https://github.com/juntossomosmais/django-outbox-pattern).
+This repository demonstrates the Outbox Pattern in microservices, leveraging the Django Outbox Pattern library developed
+at [@juntossomosmais](https://github.com/juntossomosmais/django-outbox-pattern).
 
 ### 🎭 Scenario: E-Commerce System
 
-An e-commerce system uses microservices (Order, Stock, and Payment) to manage orders, stock, and payments. The Saga pattern is implemented using the Outbox pattern for consistent communication.
+An e-commerce system uses microservices (Order, Stock, and Payment) to manage orders, stock, and payments. The Saga
+pattern is implemented using the Outbox pattern for consistent communication.
 
 * **📦 Order Service:**
     - Receives and processes customer orders.
@@ -35,9 +38,11 @@ An e-commerce system uses microservices (Order, Stock, and Payment) to manage or
 
 ![Flow](docs/flow.png)
 
-### 🏗️ Infrastructure 
+### 🏗️ Infrastructure
 
-This repository provides configuration files for deploying three Django services (Order, Stock, Payment) on Kubernetes and Docker Compose. Each service has its PostgreSQL database, and RabbitMQ facilitates communication. Kong serves as an API gateway and microservices management layer.
+This repository provides configuration files for deploying three Django services (Order, Stock, Payment) on Kubernetes
+and Docker Compose. Each service has its PostgreSQL database, and RabbitMQ facilitates communication. Kong serves as an
+API gateway and microservices management layer.
 
 ![Architecture](docs/architecture.png)
 
@@ -66,16 +71,16 @@ This repository provides configuration files for deploying three Django services
     ```
 
 3. Access services via:
-   - Order Admin: [http://localhost:8000/admin](http://localhost:8000/admin)
-   - Stock Admin: [http://localhost:8001/admin](http://localhost:8001/admin)
-   - Payment Admin: [http://localhost:8002/admin](http://localhost:8002/admin)
-   - API: [http://localhost:8080](http://localhost:8080)
-   - Kong Admin: [http://localhost:8082](http://localhost:8082)
-   - RabbitMQ Management UI: [http://localhost:15672](http://localhost:15672)
+    - Order Admin: [http://localhost:8000/admin](http://localhost:8000/admin)
+    - Stock Admin: [http://localhost:8001/admin](http://localhost:8001/admin)
+    - Payment Admin: [http://localhost:8002/admin](http://localhost:8002/admin)
+    - API: [http://localhost:8080](http://localhost:8080)
+    - Kong Admin: [http://localhost:8082](http://localhost:8082)
+    - RabbitMQ Management UI: [http://localhost:15672](http://localhost:15672)
 
 4. Use these credentials:
-   - Django Admin: admin/admin
-   - RabbitMQ: guest/guest
+    - Django Admin: admin/admin
+    - RabbitMQ: guest/guest
 
 ### 🛑 Stopping the Project
 
@@ -89,7 +94,8 @@ This repository provides configuration files for deploying three Django services
 
 ## 🚀 Usage Instructions with Kubernetes
 
-This guide will walk you through setting up a Kubernetes cluster using k3d. Make sure you have Docker installed on your system before proceeding.
+This guide will walk you through setting up a Kubernetes cluster using k3d. Make sure you have Docker installed on your
+system before proceeding.
 
 ### Kubernetes Cluster Setup
 
@@ -109,7 +115,6 @@ This script will automatically:
 🚀 Install k3d, kubectl, and Helm if not already installed.
 
 🌟 Create a k3d cluster named "saga" with port mapping for load balancing.
-
 
 After running the script, your Kubernetes cluster will be set up and ready to use.
 
@@ -166,9 +171,34 @@ After running the script, your Kubernetes cluster will be set up and ready to us
      "request_id":"fa55be13bee8575984a67514efbe224c"
    }   
    ```
-    **Note:**
-   
-   If you encounter `curl: (52) Empty reply from server`, please wait a moment and try again. 
+   **Note:**
+   > If you encounter `curl: (52) Empty reply from server`, please wait a moment and try again.
+
+
+5. **Create a RabbitMQ Cluster Kubernetes Operator.**
+
+    1. Install the RabbitMQ Cluster Operator:
+        ```bash
+        kubectl rabbitmq install-cluster-operator
+        ```
+    2. Create a RabbitMQ cluster:
+         ```bash
+         kubectl apply -f rabbitmq/rabbitmq.yaml
+         ```
+    3. Create a saga exchange:
+         ```bash
+         kubectl exec svc/rabbitmq  -c rabbitmq -- rabbitmqadmin declare exchange name=saga type=topic -u guest -p guest
+         ```
+       The results should look like this:
+         ```bash
+         exchange declared
+         ```
+       **Note:**
+       > RabbitMQ cluster should be running
+    4. Access The Management UI (optional): 
+        ```bash
+        kubectl rabbitmq manage rabbitmq
+        ```
 
 ### Installing order, stock and payment using Helm 📊
 
@@ -182,7 +212,8 @@ After setting up the Kubernetes cluster and installing the Kong Ingress Controll
    helm install payment ./saga --values services/payment/values.yaml
    ```
 
-This creates three Helm releases, "order", "stock", and "payment", with configurations specified in their respective `values.yaml` files.
+This creates three Helm releases, "order", "stock", and "payment", with configurations specified in their
+respective `values.yaml` files.
 
 Please note that each command creates a specific Helm release with its own configurations.
 
@@ -201,7 +232,7 @@ k3d cluster delete saga
 2. Import the Postman [collection](docs/saga.postman_collection.json).
 
 3. Collection contains scenarios:
-   - **Unreserved Stock:** Create order with quantity > 10.
-   - **Denied Payment:** Create order with amount > $1000.
+    - **Unreserved Stock:** Create order with quantity > 10.
+    - **Denied Payment:** Create order with amount > $1000.
 
 4. Run requests to observe system behavior.

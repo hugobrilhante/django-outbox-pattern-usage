@@ -57,6 +57,63 @@ spec:
             - secretRef:
                 name: {{.Values.name}}-secret
       restartPolicy: Always
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.name}}-deployment-consumer
+  labels:
+    app: {{.Values.name}}
+spec:
+  replicas: {{.Values.replicas}}
+  selector:
+    matchLabels:
+      app: {{.Values.name}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.name}}
+    spec:
+      containers:
+        - name: {{.Values.name}}-container
+          image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
+          command: [ "python", "manage.py", "subscribe", "src.core.callback.callback", "/exchange/saga/{{.Values.name}}.v1", "{{.Values.name}}.v1" ]
+          imagePullPolicy: {{.Values.image.pullPolicy}}
+          envFrom:
+            - configMapRef:
+                name: {{.Values.name}}-config-map
+            - secretRef:
+                name: {{.Values.name}}-secret
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.name}}-deployment-producer
+  labels:
+    app: {{.Values.name}}
+spec:
+  replicas: {{.Values.replicas}}
+  selector:
+    matchLabels:
+      app: {{.Values.name}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.name}}
+    spec:
+      containers:
+        - name: {{.Values.name}}-container
+          image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
+          command: [ "python", "manage.py", "publish"]
+          imagePullPolicy: {{.Values.image.pullPolicy}}
+          envFrom:
+            - configMapRef:
+                name: {{.Values.name}}-config-map
+            - secretRef:
+                name: {{.Values.name}}-secret
+      restartPolicy: Always
 ---
 apiVersion: apps/v1
 kind: Deployment

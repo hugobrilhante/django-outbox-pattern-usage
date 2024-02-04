@@ -56,7 +56,7 @@ Este repositório fornece arquivos de configuração para implantar três servi�
 
 1. Navegue até o diretório [docker](docker).
     ```bash
-       cd docker
+    cd docker
     ```
 
 2. Execute o script de início:
@@ -79,7 +79,12 @@ Este repositório fornece arquivos de configuração para implantar três servi�
 
 ### 🛑 Parando o Projeto
 
-1. Execute o script de parada:
+1. Navegue até o diretório [docker](docker).
+    ```bash
+    cd docker
+    ```
+
+2. Execute o script de parada:
 
     ```bash
     ./scripts/stop.sh
@@ -102,11 +107,11 @@ Para configurar o cluster Kubernetes, siga estas etapas:
    ./setup.sh
     ```
 
-Este script irá automaticamente:
+Este script automaticamente:
 
-🚀 Instalar k3d, kubectl e Helm se ainda não estiverem instalados.
+🚀 Instala k3d, kubectl, Krew e Helm se ainda não estiverem instalados.
 
-🌟 Criar um cluster k3d chamado "saga" com mapeamento de porta para balanceamento de carga.
+🌟 Cria um cluster k3d chamado "saga" com mapeamento de portas para balanceamento de carga.
 
 Após executar o script, seu cluster Kubernetes estará configurado e pronto para uso.
 
@@ -139,9 +144,7 @@ Após executar o script, seu cluster Kubernetes estará configurado e pronto par
        helm install kong kong/ingress -n kong --create-namespace --values kong/values.yaml
     ```
 
-4
-
-. **Verificar Instalação**
+4. **Verificar Instalação**
 
    Após a instalação, verifique se os pods do Controlador de Ingress do Kong estão em execução:
 
@@ -166,14 +169,39 @@ Após executar o script, seu cluster Kubernetes estará configurado e pronto par
    }   
    ```
    **Observação:**
-   
-   Se encontrar `curl: (52) Empty reply from server`, aguarde um momento e tente novamente. 
+   > Se encontrar `curl: (52) Empty reply from server`, aguarde um momento e tente novamente.
 
-### Instalando pedido, estoque e pagamento usando Helm 📊
+
+5. **Crie um Operador de Kubernetes RabbitMQ Cluster.**
+
+    1. Instale o Operador de Cluster RabbitMQ:
+        ```bash
+        kubectl rabbitmq install-cluster-operator
+        ```
+    2. Crie um cluster RabbitMQ:
+         ```bash
+         kubectl apply -f rabbitmq/rabbitmq.yaml
+         ```
+    3. Crie uma exchange saga:
+         ```bash
+         kubectl exec svc/rabbitmq  -c rabbitmq -- rabbitmqadmin declare exchange name=saga type=topic -u guest -p guest
+         ```
+       Os resultados devem ser semelhantes a isto:
+         ```bash
+         exchange declared
+         ```
+       **Observação:**
+       > O cluster RabbitMQ deve estar em execução
+    4. Acesse a Interface de Gerenciamento (opcional):
+        ```bash
+        kubectl rabbitmq manage rabbitmq
+        ```
+
+### Instalando os serviços de pedido, estoque e pagamento usando Helm 📊
 
 Após configurar o cluster Kubernetes e instalar o Controlador de Ingress do Kong:
 
-1. Use o Helm para criar os lançamentos "order", "stock" e "payment" usando o gráfico Saga e os valores correspondentes:
+1. Use o Helm para criar os releases "order", "stock" e "payment" usando o chart Saga e os valores correspondentes:
 
    ```bash
    helm install order ./saga --values services/order/values.yaml
@@ -181,9 +209,9 @@ Após configurar o cluster Kubernetes e instalar o Controlador de Ingress do Kon
    helm install payment ./saga --values services/payment/values.yaml
    ```
 
-Isso cria três lançamentos do Helm, "order", "stock" e "payment", com configurações especificadas em seus respectivos arquivos `values.yaml`.
+Isso cria três releases do Helm, "order", "stock" e "payment", com as configurações especificadas em seus respectivos arquivos `values.yaml`.
 
-Observe que cada comando cria um lançamento do Helm específico com suas próprias configurações.
+Por favor, note que cada comando cria um release do Helm específico com suas próprias configurações.
 
 ### 🛑 Parando o Projeto
 
@@ -193,14 +221,14 @@ Observe que cada comando cria um lançamento do Helm específico com suas própr
 k3d cluster delete saga
 ```
 
-## 🧪 Cenários de Teste com Coleção Postman
+## 🧪 Testando Cenários com a Coleção do Postman
 
 1. Instale o [Postman](https://www.postman.com/downloads/).
 
 2. Importe a [coleção](docs/saga.postman_collection.json) do Postman.
 
 3. A coleção contém cenários:
-   - **Estoque Não Reservado:** Criar pedido com quantidade > 10.
-   - **Pagamento Negado:** Criar pedido com valor > $1000.
+    - **Estoque Não Reservado:** Criar pedido com quantidade > 10.
+    - **Pagamento Negado:** Criar pedido com valor > $1000.
 
 4. Execute as solicitações para observar o comportamento do sistema.
