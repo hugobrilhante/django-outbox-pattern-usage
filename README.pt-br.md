@@ -221,6 +221,10 @@ Por favor, note que cada comando cria um release do Helm específico com suas pr
 k3d cluster delete saga
 ```
 
+## Web App
+
+![Web](docs/microservice_action.gif)
+
 ## 🧪 Testando Cenários com a Coleção do Postman
 
 1. Instale o [Postman](https://www.postman.com/downloads/).

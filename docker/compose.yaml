@@ -148,7 +148,7 @@ services:
     profiles: [ rabbitmq ]
     image: rabbitmq:3.9.29-management
     volumes:
-      - ./docker/rabbitmq:/etc/rabbitmq/
+      - ./rabbitmq:/etc/rabbitmq/
     healthcheck:
       test: [ "CMD-SHELL","rabbitmq-diagnostics -q ping" ]
       interval: 5s

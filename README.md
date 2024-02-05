@@ -1,5 +1,4 @@
 # 🌐 Saga with Outbox Pattern: Orchestrating Distributed Transactions in Microservices
-
 [![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
 [![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](README.pt-br.md)
 
@@ -224,6 +223,9 @@ Please note that each command creates a specific Helm release with its own confi
 ```bash
 k3d cluster delete saga
 ```
+## Web App
+
+![Web](docs/microservice_action.gif)
 
 ## 🧪 Testing Scenarios with Postman Collection
 

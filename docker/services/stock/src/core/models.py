@@ -25,6 +25,7 @@ class Reservation(models.Model):
         ("reserved", "Reserved"),
         ("not_reserved", "Not Reserved"),
         ("payment_denied", "Payment Denied"),
+        ("payment_confirmed", "Payment Confirmed")
     )
     order_id = models.CharField(max_length=20)
     product_id = models.CharField(max_length=20)
